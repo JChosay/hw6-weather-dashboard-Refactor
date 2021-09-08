@@ -21,24 +21,37 @@ var forecastcards = $('#forecastcards');
 var count = 8;
 var dayIndex = [0, count, 2*count, 3*count, 4*count];
 var forecastcontainer = $('#forecastcontainer');
+var searchTrack = JSON.parse(window.localStorage.getItem('searchTrack'));
 
-function loadScreen (){
-    var searchTrack = JSON.parse(window.localStorage.getItem('searchTrack'));
-    if (searchTrack == null){
+function loadScreen() {
+    if (searchTrack == null) {
         return;
-    }else if (searchTrack.length > 0){
+    } else if (searchTrack.length > 0) {
         searcharea.css('border-bottom', 'solid');
+        for(var i=0; i<searchTrack.length+1; i++){
+        
+            if (searchTrack[i] == null){
+                break;
+            }else{
+                var historyItem = $('<input>');
+                    historyItem.attr('type','button');
+                    historyItem.attr('value', searchTrack[i].cityname);
+                    historyItem.attr('class','historybuttons');
+                    searchhistory.append(historyItem);
+                    historyItem.on("click",recallsearch);
+            }
+        }
     }
 
-    for(var i=0; i<searchTrack.length+1; i++){
-        if (searchTrack[i] == null){
+    for (var i = 0; i < searchTrack.length + 1; i++) {
+        if (searchTrack[i] == null) {
             return;
-        }else{
+        } else {
             var historyItem = $('#input');
-            historyItem.attr('type','button');
-            historyItem.text(searchTrack[i].cityname);
-            historyItem.attr('class','historybuttons');
-            searchhistory.append(historyItem);
+                historyItem.attr('type', 'button');
+                historyItem.text(searchTrack[i].cityname);
+                historyItem.attr('class', 'historybuttons');
+                searchhistory.append(historyItem);
         }
     }
 }
@@ -70,75 +83,74 @@ function submitCity(event){
 
         let queryUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,daily&appid=c422aee9ed9f77364f533d6d1dbe4ba9&units=imperial`
 
-        fetch(queryUrl)
-            .then(function(response){
-                return response.json();
-            })
-            .then(function(data){
-                tempCallConv = data.current.temp;
-                windCallConv = data.current.wind_speed;
-                humidityCall = data.current.humidity;
-                uvindexCall = data.current.uvi;
-                tempIcon = data.current.weather[0].icon;
-                
-                tempCall = tempCallConv.toFixed(0);
-                windCall = windCallConv.toFixed(2);
+    fetch(queryUrl)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+            tempCallConv = data.current.temp;
+            windCallConv = data.current.wind_speed;
+            humidityCall = data.current.humidity;
+            uvindexCall = data.current.uvi;
+            tempIcon = data.current.weather[0].icon;
+            tempCall = tempCallConv.toFixed(0);
+            windCall = windCallConv.toFixed(2);
+        
+            var results1Tag = $('<h4>');
+                results1Tag.text("Temperature: " + tempCall + "°F" );
+                citydayinfo.append(results1Tag);
+
+            var results2Tag = $('<h4>');
+                results2Tag.text("Wind Speed: " + windCall + " MPH" );
+                citydayinfo.append(results2Tag);
+        
+            var results3Tag = $('<h4>');
+                results3Tag.text("Humidity: " + humidityCall + "%" );
+                citydayinfo.append(results3Tag);
             
-                var results1Tag = $('<h4>');
-                    results1Tag.text("Temperature: " + tempCall + "°F" );
-                    citydayinfo.append(results1Tag);
-
-                var results2Tag = $('<h4>');
-                    results2Tag.text("Wind Speed: " + windCall + " MPH" );
-                    citydayinfo.append(results2Tag);
+            var results4Tag = $('<h4>');
+                results4Tag.text("UV Index: "+uvindexCall);
+                citydayinfo.append(results4Tag);
+                citydayinfo.attr('display','flex');
             
-                var results3Tag = $('<h4>');
-                    results3Tag.text("Humidity: " + humidityCall + "%" );
-                    citydayinfo.append(results3Tag);
-                
-                var results4Tag = $('<h4>');
-                    results4Tag.text("UV Index: "+uvindexCall);
-                    citydayinfo.append(results4Tag);
-                    citydayinfo.attr('display','flex');
-                
-                var iconTag = $('<img>');
-                    iconTag.attr('id','dayIcon');
-                    iconTag.attr('src',`https://openweathermap.org/img/wn/${tempIcon}@2x.png`);
-                    citydayinfo.append(iconTag);
+            var iconTag = $('<img>');
+                iconTag.attr('id','dayIcon');
+                iconTag.attr('src',`https://openweathermap.org/img/wn/${tempIcon}@2x.png`);
+                citydayinfo.append(iconTag);
 
-                var searchTrack = localStorage.getItem('searchTrack');
+            var searchTrack = localStorage.getItem('searchTrack');
 
-                if(searchTrack===null){
-                    searchTrack = [
-                        {
-                        cityname: userinput,
-                        temp: tempCall,
-                        wind: windCall,
-                        humidity: humidityCall,
-                        uvi: uvindexCall
-                        }
-                    ]
-                    window.localStorage.setItem('searchTrack',JSON.stringify(searchTrack));
-                }else{
-                    var newSearch = [
-                        {
-                        cityname: userinput,
-                        temp: tempCall,
-                        wind: windCall,
-                        humidity: humidityCall,
-                        uvi: uvindexCall
-                        }
-                    ]
+            if(searchTrack===null){
+                searchTrack = [
+                    {
+                    cityname: userinput,
+                    temp: tempCall,
+                    wind: windCall,
+                    humidity: humidityCall,
+                    uvi: uvindexCall
+                    }
+                ]
+                window.localStorage.setItem('searchTrack',JSON.stringify(searchTrack));
+            }else{
+                var newSearch = [
+                    {
+                    cityname: userinput,
+                    temp: tempCall,
+                    wind: windCall,
+                    humidity: humidityCall,
+                    uvi: uvindexCall
+                    }
+                ]
 
-                    var searchMem = JSON.parse(localStorage.getItem('searchTrack'));
-                    searchTrack = searchMem.concat(newSearch);
-                    localStorage.setItem('searchTrack', JSON.stringify(searchTrack));
-                    displaySearches();
-                }
-            })
+                var searchMem = JSON.parse(localStorage.getItem('searchTrack'));
+                searchTrack = searchMem.concat(newSearch);
+                localStorage.setItem('searchTrack', JSON.stringify(searchTrack));
+                displaySearches();
+            }
+        })
     })
-    cityfivedayinfo.css('display','flex');
-    
+    cityfivedayinfo.css('display','flex');    
 }
 
 function displaySearches(){  
@@ -151,11 +163,12 @@ function displaySearches(){
         if (searchTrack[i] == null){
             break;
         }else{
-            var historyItem = document.createElement('input');
-            historyItem.setAttribute('type','button');
-            historyItem.setAttribute('value',searchTrack[i].cityname);
-            historyItem.setAttribute('class','historybuttons');
+            var historyItem = $('<input>');
+            historyItem.attr('type','button');
+            historyItem.attr('value', searchTrack[i].cityname);
+            historyItem.attr('class','historybuttons');
             searchhistory.append(historyItem);
+            historyItem.on("click", recallsearch);
         }
     }
     displayFiveDay();     
@@ -214,8 +227,78 @@ function displayFiveDay(){
                 forecastcard.append(humidTag);
                 forecastcontainer.append(forecastcard);
             }
-
         })
 }
 
+function recallsearch(){
+    console.log(this.value);
+    event.preventDefault();
+    citydayinfo.empty();
+    userinput = this.value;
+    inputfield.empty();
+    searcharea.css('border-bottom','solid');
+    citydayinfo.css('display','inline');
+
+    let locationURL = `https://us1.locationiq.com/v1/search.php?key=pk.21d85371f816e7abc29eac9fe2f539f3&q=${userinput}&format=json`;
+    fetch(locationURL)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        latitude = data[0].lat;
+        longitude = data[0].lon;
+    
+        var h1Tag = $('<h1>');
+        h1Tag.text(userinput);
+        citydayinfo.append(h1Tag);
+        
+        var dateTag = $('<h3>');
+        dateTag.text(date);
+        citydayinfo.append(dateTag);
+
+        let queryUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,daily&appid=c422aee9ed9f77364f533d6d1dbe4ba9&units=imperial`
+
+    fetch(queryUrl)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+            tempCallConv = data.current.temp;
+            windCallConv = data.current.wind_speed;
+            humidityCall = data.current.humidity;
+            uvindexCall = data.current.uvi;
+            tempIcon = data.current.weather[0].icon;
+            tempCall = tempCallConv.toFixed(0);
+            windCall = windCallConv.toFixed(2);
+        
+            var results1Tag = $('<h4>');
+                results1Tag.text("Temperature: " + tempCall + "°F" );
+                citydayinfo.append(results1Tag);
+
+            var results2Tag = $('<h4>');
+                results2Tag.text("Wind Speed: " + windCall + " MPH" );
+                citydayinfo.append(results2Tag);
+        
+            var results3Tag = $('<h4>');
+                results3Tag.text("Humidity: " + humidityCall + "%" );
+                citydayinfo.append(results3Tag);
+            
+            var results4Tag = $('<h4>');
+                results4Tag.text("UV Index: "+uvindexCall);
+                citydayinfo.append(results4Tag);
+                citydayinfo.attr('display','flex');
+            
+            var iconTag = $('<img>');
+                iconTag.attr('id','dayIcon');
+                iconTag.attr('src',`https://openweathermap.org/img/wn/${tempIcon}@2x.png`);
+                citydayinfo.append(iconTag);
+
+                displaySearches();            
+        })
+    })
+    cityfivedayinfo.css('display','flex');
+}
+
+console.log('OHIO STATE MUST BE DESTROYED.');
 loadScreen();
