@@ -56,11 +56,13 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    margin-top: -10px;
 }
 
 #inputfield{
-    width: 100px;
+    width: 150px;
     font-family:"Times New Roman";
+    font-size: 1.5rem;
 }
 
 #searchbtn{
