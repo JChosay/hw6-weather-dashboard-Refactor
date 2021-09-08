@@ -132,6 +132,7 @@ function submitCity(event){
                     }
                 ]
                 window.localStorage.setItem('searchTrack',JSON.stringify(searchTrack));
+                displaySearches();
             }else{
                 var newSearch = [
                     {
