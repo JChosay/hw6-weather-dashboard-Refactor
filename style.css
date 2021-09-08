@@ -1,0 +1,188 @@
+*,*::before,*::after{
+    box-sizing: border-box;
+}
+
+:root{
+    --dark: #001219;
+    --lightdark1: #005f73;
+    --lightdark2: #0a9396;
+    --heading: #ae2012;
+    --heading2: #bb3e03;
+    --heading3: #ca6702;
+    --accentyellow: #ee9b00;
+    --accenttan: #e9d8a6;
+}
+
+#main{
+    position: relative;
+    height: 100vh;
+    flex-direction: row;
+}
+
+#header{
+    color: var(--heading);
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    background-color: var(--lightdark1);
+    height: 10vh;
+}
+
+#header h1{
+    position: relative;
+    background-color: var(--lightdark);
+    padding-top: .1rem;
+    font-family: 'Lobster', cursive;
+    margin: auto;
+    letter-spacing: 0.1em;
+    font-size: 7vh;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+#searcharea{
+    width: 23vh;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#searcharea h2{
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+#citysearch{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#inputfield{
+    width: 100px;
+    font-family:"Times New Roman";
+}
+
+#searchbtn{
+    cursor: pointer;
+	position: relative;
+	padding: .25rem .75rem;
+	border-radius: 3.75rem;
+	line-height: 1rem;
+	font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+	font-weight: 600;
+	margin-left: auto;
+	border: 1px solid var(--dark);
+	background-image: linear-gradient(-180deg, var(--heading2) 0%, var(--heading2) 100%);
+}
+
+#searchDiv{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+#searchhistory{
+    display: flex;
+    flex-direction: column;
+}
+
+.historybuttons{
+    width: 23vh;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 5px;
+    border: 1px solid #012880;
+	background-image: linear-gradient(-180deg, var(--heading3) 0%, var(--heading2) 100%);
+    color: whitesmoke;
+    border-radius: 3.75rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+#citydayinfo img{
+    width: 30%;
+    height: auto;
+    position: absolute;
+    left: 25vh;
+}
+
+#citydayinfo h4{
+    /* line-height: -10em; */
+    margin-top: 0%;
+}
+
+#citydayinfo h3{
+    margin-top: 1%;
+}
+
+#citydayinfo{
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    left: 25vh;
+    line-height: 5px;
+    top: 7rem;
+    border-style: solid;
+    border-color: var(--heading);
+    width: 88vh;
+    padding-left: 1vh;
+    font-family: 'Bitter', serif;
+}
+
+#cityfivedayinfo{
+    border: dashed;
+    border-color: var(--heading3);
+    position: absolute;
+    left: 25vh;
+    top: 20rem;
+    height: 18rem;
+    width: 88vh;
+    display: none;
+    padding-left: 1vh;
+    font-family: 'Bitter', serif;
+}
+
+#cityfivedayinfo h2{
+    position: relative;
+    margin-top: 1vh;
+    margin-top: 1vh;
+}
+
+#forecastcontainer{
+    position: absolute;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25% 25%;
+    flex-direction: row;
+}
+
+.forecastcard{
+    grid-template-columns: 40% 40% 40% 40% 40%;
+    flex-direction: column;
+    line-height: 5px;
+    margin-top: 5vh;
+    width: auto;
+}
+
+.forecastcard p{
+    margin-top: 1vh
+    
+}
+
+.forecastcard h4{
+    margin-top: .25vh;
+    margin-bottom: 2vh;
+    color: var(--lightdark1);
+
+}
+
+.forecastcard h3{
+    color: var(--heading);
+    margin-bottom: .25vh;
+}
+
+
+.forecastcard img{
+    width: 50%;
+    height: auto;
+}
