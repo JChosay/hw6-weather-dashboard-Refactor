@@ -232,11 +232,10 @@ function displayFiveDay(){
 }
 
 function recallsearch(){
-    console.log(this.value);
     event.preventDefault();
     citydayinfo.empty();
     userinput = this.value;
-    inputfield.empty();
+    
     searcharea.css('border-bottom','solid');
     citydayinfo.css('display','inline');
 
